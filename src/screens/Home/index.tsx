@@ -1,10 +1,26 @@
-import { Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { Text, TextInput, View, TouchableOpacity, FlatList } from 'react-native';
 import { styles } from './styles';
 import { Participant } from '../../components/Participant';
 
 export function Home() {
+  const participants = [
+    'Vanor',
+    'Amanda',
+    'Luiza',
+    'Jean',
+    'Théo',
+    'Isa',
+    'Pedro',
+    'Arthur',
+    'Vanessa',
+  ];
+
   function handleParticipantAdd() {
     console.log('clicou em adicionar');
+  }
+
+  function handleParticipantRemove(name: string) {
+    console.log(`clicou em remover ${name}`);
   }
 
   return (
@@ -25,9 +41,28 @@ export function Home() {
         </TouchableOpacity>
       </View>
 
-      <Participant />
-      <Participant />
-      <Participant />
+      <FlatList
+        data={participants}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => (
+          <Participant key={item} name={item} onRemove={() => handleParticipantRemove(item)} />
+        )}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={() => (
+          <Text style={styles.listEmptyText}>Nenhum participante foi adicionado</Text>
+        )}
+      />
+
+      {/* Habilitando rolagem da tela com ScrollView
+      <ScrollView>
+        {participants.map((participant) => (
+          <Participant
+            key={participant}
+            name={participant}
+            onRemove={() => handleParticipantRemove(participant)}
+          />
+        ))}
+      </ScrollView> */}
     </View>
   );
 }
